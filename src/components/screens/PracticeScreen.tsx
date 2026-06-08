@@ -1,44 +1,75 @@
 import { useSession } from '../../context/SessionContext'
+import { Flashcard } from '../Flashcard'
 import { InfoBadge } from '../ui/InfoBadge'
 import { PlayButton } from '../ui/PlayButton'
 import { ScreenHeader } from '../ui/ScreenHeader'
 
 export function PracticeScreen() {
-  const { setView } = useSession()
+  const { state, setView, selectAnswer, advanceCard } = useSession()
+  const { questionsDeck, currentCardIndex } = state
+  const isComplete =
+    questionsDeck.length > 0 && currentCardIndex >= questionsDeck.length
+  const currentQuestion = questionsDeck[currentCardIndex]
+  const hasDeck = questionsDeck.length > 0
 
   return (
     <div className="flex flex-col items-center gap-7 text-center">
       <ScreenHeader
         emoji="🃏"
-        title="Practice Time!"
-        subtitle="Flip the card, pick your answer, and see how awesome you are!"
+        title={isComplete ? 'Great Job!' : 'Practice Time!'}
+        subtitle={
+          isComplete
+            ? 'You finished every card in this session — you are a math star!'
+            : 'Pick your answer, flip the card, and tell us how you did!'
+        }
       />
 
-      <div className="relative w-full max-w-xs">
-        <div className="playful-shadow rotate-1 rounded-3xl border-4 border-sky-bright/30 bg-gradient-to-br from-white to-sky-50 p-8">
-          <p className="font-display text-5xl font-bold text-slate-800">7 + 5 = ?</p>
-          <div className="mt-6 grid grid-cols-2 gap-3">
-            {['10', '12', '13', '11'].map((choice) => (
-              <div
-                key={choice}
-                className="rounded-xl border-2 border-sky-100 bg-white py-3 font-display text-xl font-bold text-sky-deep"
-              >
-                {choice}
-              </div>
-            ))}
+      {isComplete ? (
+        <div className="flex w-full flex-col items-center gap-5">
+          <div className="animate-wiggle text-7xl">🌟</div>
+          <InfoBadge tone="mint">
+            You completed all {questionsDeck.length} flashcards!
+          </InfoBadge>
+          <div className="flex w-full flex-col gap-3 sm:flex-row sm:justify-center">
+            <PlayButton variant="primary" size="lg" onClick={() => setView('SETUP')}>
+              <span aria-hidden="true">🎮</span>
+              Play Again
+            </PlayButton>
+            <PlayButton variant="grape" size="lg" onClick={() => setView('STATS')}>
+              <span aria-hidden="true">🏆</span>
+              See My Stats
+            </PlayButton>
           </div>
         </div>
-        <span className="absolute -right-3 -top-3 animate-wiggle text-3xl">✨</span>
-      </div>
+      ) : currentQuestion ? (
+        <>
+          <Flashcard
+            question={currentQuestion}
+            onSelectAnswer={selectAnswer}
+            onSelfAssess={advanceCard}
+          />
+          <InfoBadge tone="sky">
+            Card {currentCardIndex + 1} of {questionsDeck.length}
+          </InfoBadge>
+        </>
+      ) : (
+        <div className="flex flex-col items-center gap-5">
+          <InfoBadge tone="coral">
+            No cards in your deck — head back and start a practice session!
+          </InfoBadge>
+          <PlayButton variant="ghost" onClick={() => setView('SETUP')}>
+            <span aria-hidden="true">🏠</span>
+            Back Home
+          </PlayButton>
+        </div>
+      )}
 
-      <InfoBadge tone="sky">
-        🃏 Flashcard flip magic is on the way — get ready to play!
-      </InfoBadge>
-
-      <PlayButton variant="ghost" onClick={() => setView('SETUP')}>
-        <span aria-hidden="true">🏠</span>
-        Back Home
-      </PlayButton>
+      {hasDeck && !isComplete && (
+        <PlayButton variant="ghost" onClick={() => setView('SETUP')}>
+          <span aria-hidden="true">🏠</span>
+          Back Home
+        </PlayButton>
+      )}
     </div>
   )
 }

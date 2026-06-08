@@ -98,3 +98,44 @@ body {
     0 2px 0 rgba(0, 0, 0, 0.08),
     0 4px 8px rgba(91, 141, 239, 0.1);
 }
+
+.flashcard-scene {
+  perspective: 1200px;
+}
+
+.flashcard-inner {
+  position: relative;
+  width: 100%;
+  min-height: 22rem;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+
+.flashcard-flipped {
+  transform: rotateY(180deg);
+}
+
+.flashcard-face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: 1.5rem;
+  border-width: 4px;
+  padding: 2rem;
+}
+
+.flashcard-front {
+  background: linear-gradient(to bottom right, #ffffff, #e8f7ff);
+  border-color: #a8ddf8;
+}
+
+.flashcard-back {
+  transform: rotateY(180deg);
+  background: linear-gradient(to bottom right, #ffffff, #f3e8ff);
+  border-color: #d8b4fe;
+}

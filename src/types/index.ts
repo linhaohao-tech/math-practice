@@ -28,11 +28,19 @@ export interface SessionStats {
 export interface SessionState {
   currentView: View
   sessionLength: number
+  selectedOperations: Operation[]
   currentCardIndex: number
   questionsDeck: MathQuestion[]
   wrongQuestionsQueue: MathQuestion[]
   stats: SessionStats
 }
+
+export const ALL_OPERATIONS: Operation[] = [
+  'addition',
+  'subtraction',
+  'multiplication',
+  'division',
+]
 
 export const INITIAL_STATS: SessionStats = {
   totalAttempted: 0,
@@ -49,6 +57,7 @@ export const INITIAL_STATS: SessionStats = {
 export const INITIAL_SESSION_STATE: SessionState = {
   currentView: 'SETUP',
   sessionLength: 10,
+  selectedOperations: [...ALL_OPERATIONS],
   currentCardIndex: 0,
   questionsDeck: [],
   wrongQuestionsQueue: [],

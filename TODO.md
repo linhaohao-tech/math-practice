@@ -29,26 +29,26 @@
 
 ## Phase 2: Question Generation Logic
 
-- [ ] **5. Addition question generator**
+- [x] **5. Addition question generator**
   - Generate `operandA + operandB ≤ 100` (positive integers)
   - Return a `MathQuestion` with `formattedString` and `correctAnswer`
 
-- [ ] **6. Subtraction question generator**
+- [x] **6. Subtraction question generator**
   - Enforce `operandA - operandB ≥ 0`, max starting value ≤ 100
   - No negative results
 
-- [ ] **7. Multiplication question generator**
+- [x] **7. Multiplication question generator**
   - Single/double digits up to `12 × 12`
 
-- [ ] **8. Division question generator**
+- [x] **8. Division question generator**
   - Generate factors first (`A = B × C`), present as `A ÷ B = ?`
   - Ensure whole-number answers only
 
-- [ ] **9. MCQ distractor generator**
+- [x] **9. MCQ distractor generator**
   - Build array of 4 choices: 1 correct + 3 plausible wrong answers
   - Shuffle choices so correct answer isn't always in the same position
 
-- [ ] **10. Deck builder**
+- [x] **10. Deck builder**
   - Accept selected operations + session length (10, 20, or 50)
   - Generate a full `questionsDeck` array of `MathQuestion` objects
 
@@ -56,18 +56,18 @@
 
 ## Phase 3: Setup Screen
 
-- [ ] **11. Operation toggle buttons**
+- [x] **11. Operation toggle buttons**
   - Large buttons for `+`, `−`, `×`, `÷`
   - Support multiple active operations at once
 
-- [ ] **12. Session length selector**
+- [x] **12. Session length selector**
   - Let user pick 10, 20, or 50 flashcards
 
-- [ ] **13. Start Practice flow**
+- [x] **13. Start Practice flow**
   - "Start" button builds deck and navigates to `PRACTICE` view
   - Validate at least one operation is selected
 
-- [ ] **14. Review Mistakes entry point (UI only)**
+- [x] **14. Review Mistakes entry point (UI only)**
   - Add "Review Mistakes" button on setup screen
   - Disabled when `wrongQuestionsQueue` is empty (wire up later in Phase 5)
 
@@ -75,27 +75,27 @@
 
 ## Phase 4: Flashcard Engine (Core UX)
 
-- [ ] **15. Card front — question display**
+- [x] **15. Card front — question display**
   - Show `formattedString` with large, legible typography
   - Render 4 MCQ buttons from `question.choices`
 
-- [ ] **16. MCQ selection & lock**
+- [x] **16. MCQ selection & lock**
   - On click: store `userSelectedAnswer`, visually lock selection
   - Disable other buttons after selection
 
-- [ ] **17. 3D card flip animation**
+- [x] **17. 3D card flip animation**
   - CSS: `transform-style: preserve-3d`, `rotateY(180deg)` on flip
   - Trigger flip immediately after MCQ selection
 
-- [ ] **18. Card back — answer & feedback**
+- [x] **18. Card back — answer & feedback**
   - Show correct numerical answer
   - Visual indicator: selected answer was correct or incorrect
 
-- [ ] **19. Self-assessment buttons**
+- [x] **19. Self-assessment buttons**
   - "I Got It Right" and "I Got It Wrong" CTAs
   - Flip card back to front (zero rotation) and advance to next card
 
-- [ ] **20. Session progression**
+- [x] **20. Session progression**
   - Track `currentCardIndex`, iterate through `questionsDeck`
   - Handle end-of-deck (return to setup or show completion state)
 
