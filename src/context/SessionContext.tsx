@@ -11,73 +11,7 @@ import {
   type SessionState,
   type View,
 } from '../types'
-import { buildDeck } from '../utils'
-
-type SessionAction =
-  | { type: 'SET_VIEW'; payload: View }
-  | { type: 'RESET_SESSION' }
-  | { type: 'SET_SESSION_LENGTH'; payload: number }
-  | { type: 'SET_QUESTIONS_DECK'; payload: SessionState['questionsDeck'] }
-  | { type: 'TOGGLE_OPERATION'; payload: Operation }
-  | { type: 'START_PRACTICE' }
-  | { type: 'SELECT_ANSWER'; payload: number }
-  | { type: 'ADVANCE_CARD' }
-
-function sessionReducer(state: SessionState, action: SessionAction): SessionState {
-  switch (action.type) {
-    case 'SET_VIEW':
-      return { ...state, currentView: action.payload }
-    case 'RESET_SESSION':
-      return {
-        ...INITIAL_SESSION_STATE,
-        selectedOperations: state.selectedOperations,
-        sessionLength: state.sessionLength,
-        wrongQuestionsQueue: state.wrongQuestionsQueue,
-        stats: state.stats,
-      }
-    case 'SET_SESSION_LENGTH':
-      return { ...state, sessionLength: action.payload }
-    case 'SET_QUESTIONS_DECK':
-      return {
-        ...state,
-        questionsDeck: action.payload,
-        currentCardIndex: 0,
-      }
-    case 'TOGGLE_OPERATION': {
-      const isSelected = state.selectedOperations.includes(action.payload)
-      const selectedOperations = isSelected
-        ? state.selectedOperations.filter((op) => op !== action.payload)
-        : [...state.selectedOperations, action.payload]
-      return { ...state, selectedOperations }
-    }
-    case 'START_PRACTICE': {
-      if (state.selectedOperations.length === 0) return state
-      return {
-        ...state,
-        questionsDeck: buildDeck(state.selectedOperations, state.sessionLength),
-        currentCardIndex: 0,
-        currentView: 'PRACTICE',
-      }
-    }
-    case 'SELECT_ANSWER': {
-      const index = state.currentCardIndex
-      const card = state.questionsDeck[index]
-      if (!card || card.userSelectedAnswer !== null) return state
-
-      const questionsDeck = state.questionsDeck.map((question, i) =>
-        i === index ? { ...question, userSelectedAnswer: action.payload } : question,
-      )
-      return { ...state, questionsDeck }
-    }
-    case 'ADVANCE_CARD':
-      return {
-        ...state,
-        currentCardIndex: state.currentCardIndex + 1,
-      }
-    default:
-      return state
-  }
-}
+import { sessionReducer, type SessionAction } from './sessionReducer'
 
 interface SessionContextValue {
   state: SessionState
@@ -88,7 +22,9 @@ interface SessionContextValue {
   setSessionLength: (length: number) => void
   startPractice: () => boolean
   selectAnswer: (answer: number) => void
-  advanceCard: () => void
+  selfAssess: (result: 'correct' | 'incorrect') => void
+  startReview: () => boolean
+  leaveSession: () => void
 }
 
 const SessionContext = createContext<SessionContextValue | null>(null)
@@ -109,7 +45,14 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   }
   const selectAnswer = (answer: number) =>
     dispatch({ type: 'SELECT_ANSWER', payload: answer })
-  const advanceCard = () => dispatch({ type: 'ADVANCE_CARD' })
+  const selfAssess = (result: 'correct' | 'incorrect') =>
+    dispatch({ type: 'SELF_ASSESS', payload: result })
+  const startReview = () => {
+    if (state.wrongQuestionsQueue.length === 0) return false
+    dispatch({ type: 'START_REVIEW' })
+    return true
+  }
+  const leaveSession = () => dispatch({ type: 'SET_VIEW', payload: 'SETUP' })
 
   return (
     <SessionContext.Provider
@@ -122,7 +65,9 @@ export function SessionProvider({ children }: { children: ReactNode }) {
         setSessionLength,
         startPractice,
         selectAnswer,
-        advanceCard,
+        selfAssess,
+        startReview,
+        leaveSession,
       }}
     >
       {children}

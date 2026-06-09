@@ -8,3 +8,4 @@ export {
   generateSubtractionQuestion,
 } from './generators'
 export { pickRandom, randomInt, shuffle } from './random'
+export { accuracyPercent } from './stats'

@@ -33,8 +33,10 @@ export function AppRouter() {
       break
   }
 
+  const focused = state.currentView === 'PRACTICE' || state.currentView === 'REVIEW'
+
   return (
-    <PageShell accent={accent}>
+    <PageShell accent={accent} focused={focused}>
       {screen}
     </PageShell>
   )

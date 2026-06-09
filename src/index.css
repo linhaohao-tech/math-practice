@@ -1,7 +1,7 @@
 @import 'tailwindcss';
 
 @theme {
-  --font-sans: 'Nunito', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Nunito', 'Inter', ui-sans-serif, system-ui, sans-serif;
   --font-display: 'Fredoka', 'Quicksand', ui-sans-serif, system-ui, sans-serif;
 
   --color-sky-bright: #5ec8ff;
@@ -21,6 +21,17 @@
 body {
   margin: 0;
   min-height: 100vh;
+  color: #0f172a;
+  -webkit-font-smoothing: antialiased;
+}
+
+*:focus-visible {
+  outline: 3px solid var(--color-sky-bright);
+  outline-offset: 2px;
+}
+
+button:focus:not(:focus-visible) {
+  outline: none;
 }
 
 @keyframes float {
@@ -78,6 +89,10 @@ body {
 
 .animate-pop-in {
   animation: pop-in 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.screen-enter {
+  animation: pop-in 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }
 
 .playful-shadow {

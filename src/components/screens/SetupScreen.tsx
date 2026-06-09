@@ -45,11 +45,12 @@ const OPERATION_OPTIONS: {
 ]
 
 export function SetupScreen() {
-  const { state, setView, toggleOperation, setSessionLength, startPractice } =
+  const { state, setView, toggleOperation, setSessionLength, startPractice, startReview } =
     useSession()
   const [showValidationError, setShowValidationError] = useState(false)
 
   const hasMistakes = state.wrongQuestionsQueue.length > 0
+  const hasSessionActivity = state.stats.totalAttempted > 0
 
   const handleStartPractice = () => {
     const started = startPractice()
@@ -72,6 +73,13 @@ export function SetupScreen() {
         title="Math Adventure!"
         subtitle="Pick your math superpowers and jump into fun flashcard practice!"
       />
+
+      {hasSessionActivity && (
+        <InfoBadge tone="sky">
+          📊 This session: {state.stats.totalAttempted} cards played
+          {hasMistakes && ` · ${state.wrongQuestionsQueue.length} to review`}
+        </InfoBadge>
+      )}
 
       <section className="w-full">
         <h2 className="mb-3 font-display text-lg font-bold text-slate-700">
@@ -146,7 +154,7 @@ export function SetupScreen() {
           variant="coral"
           size="lg"
           disabled={!hasMistakes}
-          onClick={() => setView('REVIEW')}
+          onClick={() => startReview()}
         >
           <span aria-hidden="true">🔁</span>
           Review Mistakes

@@ -103,18 +103,18 @@
 
 ## Phase 5: Stats & Review Mode
 
-- [ ] **21. Basic session stats**
+- [x] **21. Basic session stats**
   - Increment `totalAttempted`, `totalCorrect`, `totalIncorrect` on self-assessment click
 
-- [ ] **22. Per-operation stats**
+- [x] **22. Per-operation stats**
   - Track `byOperation` breakdown (addition, subtraction, multiplication, division)
   - Update correct/total counts per operator
 
-- [ ] **23. Wrong questions queue**
+- [x] **23. Wrong questions queue**
   - Push question to `wrongQuestionsQueue` when user clicks "I Got It Wrong"
   - Enable "Review Mistakes" button on setup when queue is non-empty
 
-- [ ] **24. Review Mode**
+- [x] **24. Review Mode**
   - Mount flashcard engine using only `wrongQuestionsQueue` as the deck
   - Isolated loop — no new questions mixed in
 
@@ -122,12 +122,12 @@
 
 ## Phase 6: Statistics Dashboard
 
-- [ ] **25. Stats dashboard screen**
+- [x] **25. Stats dashboard screen**
   - **Total Attempted** — count of self-assessed cards
   - **Accuracy Ratio** — correct vs. incorrect split
   - **Operational Performance** — accuracy % per operator (`+`, `−`, `×`, `÷`)
 
-- [ ] **26. Stats navigation**
+- [x] **26. Stats navigation**
   - Link from setup screen to `STATS` view
   - Stats update reactively during the session (no persistence across reloads)
 
@@ -135,21 +135,21 @@
 
 ## Phase 7: Polish & UX (Hardest / Most Integrated)
 
-- [ ] **27. Child-friendly visual design**
+- [x] **27. Child-friendly visual design**
   - Large sans-serif fonts (Quicksand or Inter)
   - Light theme, high contrast
   - Emerald green for success, soft coral/red for corrections
 
-- [ ] **28. Playful, non-punitive interactions**
+- [x] **28. Playful, non-punitive interactions**
   - Smooth transitions throughout
   - Encouraging copy and feedback states
   - Minimal distractions on practice screen
 
-- [ ] **29. Parent/instructor readability**
+- [x] **29. Parent/instructor readability**
   - Clean stats layout with clear labels
   - Easy-to-scan operational breakdown
 
-- [ ] **30. Edge cases & session lifecycle**
+- [x] **30. Edge cases & session lifecycle**
   - Empty deck / no operations selected
   - Mid-session navigation back to setup
   - Review queue cleared or updated after review session
